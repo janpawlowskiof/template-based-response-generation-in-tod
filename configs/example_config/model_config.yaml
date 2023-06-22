@@ -1,0 +1,11 @@
+pretrained_model_type: "t5"
+pretrained_model_path: "t5-large"
+
+tokenizer_type: "t5"
+tokenizer_path: "t5-large"
+
+use_search_in_dev: false
+use_search_in_test: true
+calculate_metrics_in_train: false
+
+lr: 0.00005

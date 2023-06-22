@@ -1,0 +1,58 @@
+max_token_length: 256
+is_decoder_only: False
+
+ds_split_kwargs:
+    train:
+        sgd:
+            &sgd_en_config
+            ds_type: json_dataset
+            json_path: "data/utterances_rewriting_en.json"
+            # inputs
+            x_name: "utterances"
+            use_random_x: True
+            x_preprocessors: [ "slot_description_to_value" ]
+            # outputs
+            y_name: "paraphrased_utterance"
+            y_preprocessors: [ "remove_quotqation" ]
+            # metadata
+            metadata_preprocessors: [ "slot_description_to_metadata" ]
+            required_num_sentences: [2, 3, 4, 5, 6, 7]
+        wikisplit_en:
+           &wikisplit_en_config
+           ds_type: csv_dataset
+           csv_path: "data/wikisplit/train.tsv"
+           delimiter: "\t"
+           x_col_id: 1
+           y_col_id: 0
+        quora_pl:
+           &quora_pl_config
+           ds_type: quora_dataset
+           root_path: "data/quora_en/"
+           override_split: "test"
+    dev:
+        sgd:
+            <<: *sgd_en_config
+        wikisplit_en:
+           <<: *wikisplit_en_config
+           csv_path: "data/wikisplit/validation.tsv"
+        quora_pl:
+            <<: *quora_pl_config
+            override_split: "dev"
+    test:
+        sgd:
+            <<: *sgd_en_config
+        wikisplit_en:
+           <<: *wikisplit_en_config
+           csv_path: "data/wikisplit/test.tsv"
+        quora_pl:
+           <<: *quora_pl_config
+           override_split: "dev"
+dl_split_kwargs:
+    train:
+        batch_size: 16
+    dev:
+        batch_size: 16
+    test:
+        batch_size: 16
+
+num_workers: 16

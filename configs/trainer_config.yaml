@@ -1,0 +1,4 @@
+max_epochs: null
+max_steps: 12000
+devices: [0]
+checkpoint_path: "/mnt/data/checkpoints/"
